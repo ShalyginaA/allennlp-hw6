@@ -16,9 +16,10 @@ from allennlp.training.metrics import CategoricalAccuracy, F1Measure
 from allennlp.training.trainer import Trainer
 
 from predictor import SentenceClassifierPredictor
+from Transformer import *
 
-EMBEDDING_DIM = 128
-HIDDEN_DIM = 128
+EMBEDDING_DIM = 250
+HIDDEN_DIM = 250
 
 # Model in AllenNLP represents a model that is trained.
 @Model.register("lstm_classifier")

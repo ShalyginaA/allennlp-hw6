@@ -1,0 +1,46 @@
+local embedding_dim = 1024;
+local hidden_dim = 256;
+
+{
+  "dataset_reader": {
+    "type": "sst_tokens",
+    "token_indexers": {
+      "tokens": {
+        "type": "elmo_characters"
+      }
+    }
+  },
+  "train_data_path": "trees/train.txt",
+  "validation_data_path": "trees/dev.txt",
+
+  "model": {
+    "type": "lstm_classifier",
+
+    "word_embeddings": {
+      "tokens": {
+        "type": "elmo_token_embedder",
+        "options_file": "https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway/elmo_2x4096_512_2048cnn_2xhighway_options.json",
+        "weight_file": "https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway/elmo_2x4096_512_2048cnn_2xhighway_weights.hdf5",
+        "do_layer_norm": false,
+        "dropout": 0
+      }
+    },
+
+    "encoder": {
+      "type": "lstm",
+      "input_size": 1024,
+      "hidden_size": 256,
+      "num_layers": 3,
+    }
+  },
+  "iterator": {
+    "type": "bucket",
+    "batch_size": 128,
+    "sorting_keys": [["tokens", "num_tokens"]]
+  },
+  "trainer": {
+    "optimizer": "adam",
+    "num_epochs": 10,
+    "patience": 5
+  }
+}
